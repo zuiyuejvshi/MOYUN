@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/global/style.css') }}"/>
+    <link rel="icon" href="{{ url_for('static', filename='logo/logo_320x320_colorful.png') }}" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #6C757D;
+            --success-color: #28A745;
+            --background-color: #FFFFFF;
+            --secondary-background: #F8F9FA;
+            --text-primary: #212529;
+            --text-secondary: #6C757D;
+            --text-disabled: #ADB5BD;
+            --border-color: #CED4DA;
+            --error-color: #DC3545;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--background-color);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .card {
+            background: var(--background-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069D9;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-background);
+            color: var(--text-secondary);
+            border: 1px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #E9ECEF;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            background-color: var(--error-color);
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <noscript>
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/index/css/noscript.css') }}"/>
+    </noscript>
+</head>
+<script>
+function student(){
+	document.getElementById("demo").innerHTML="我的身份是：学生";
+	// 获取表单元素
+    var formElement = document.getElementById("registerForm");
+    var inputElement = formElement.elements["role"];
+
+    // 修改输入字段的值
+    inputElement.value = "student";
+}
+function tutor(){
+	document.getElementById("demo").innerHTML="我的身份是：导师";
+	// 获取表单元素
+    var formElement = document.getElementById("registerForm");
+    var inputElement = formElement.elements["role"];
+
+    // 修改输入字段的值
+    inputElement.value = "teacher";
+}
+</script>
+<body class="is-preload">
+    <div class="container">
+        <!-- 消息闪现 -->
+        <div class="flask-info">
+            {% for message in get_flashed_messages() %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Header -->
+        <header class="card">
+            <div class="content text-center">
+                    <h1>"墨韵"读书分享平台</h1>
+                <p class="mt-2">"墨韵"是一个在线读书分享交流平台</p>
+                <p>同时这也是我们小组的软件工程实习任务</p>
+                <p>如有疑问，请访问我们如下github网址</p>
+                <p>Github Repo: <a href="https://github.com/wang152boom/MOYUN_Book.git" class="btn btn-secondary">MoYun</a></p>
+            </div>
+            <nav class="nav-links">
+                <a href="#login">登录|注册</a>
+            </nav>
+        </header>
+
+        <!-- Main -->
+        <div id="main">
+            <!-- Login -->
+            <article id="login" class="card">
+                <h2 class="text-center">登录</h2>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/index/login.png') }}" alt="登录"/>
+                </div>
+                <form method="post" action="/">
+                    <div class="form-group">
+                        <label for="account">账号/Account:</label>
+                        <input type="text" name="account" id="account" placeholder="请输入您的账号"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码/Password:</label>
+                        <input type="password" name="password" id="password" placeholder="请输入您的密码"/>
+                    </div>
+                    <div class="grid grid-2">
+                        <button type="submit" class="btn btn-primary">登录</button>
+                        <button type="button" class="btn btn-secondary" onclick="location.href='#register'">注册</button>
+                    </div>
+                </form>
+                <p class="text-center mt-2"><a href="#findPasswd" class="btn btn-secondary">忘记密码？</a></p>
+            </article>
+
+            <!-- Register -->
+            <article id="register" class="card">
+                <h2 class="text-center">注册</h2>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/index/register.png') }}" alt="注册"/>
+                </div>
+                <form id="registerForm" method="post" action="/register">
+                    <div class="form-group">
+                        <label for="account">账号/Account:</label>
+                        <input type="text" name="account" id="account" placeholder="请设置您的账号"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码/Password:</label>
+                        <input type="password" name="password" id="password" placeholder="请设置您的密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">电子邮箱/E-mail:</label>
+                        <input type="email" name="email" id="email" placeholder="请输入您的邮箱"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">联系电话/Tel:</label>
+                        <input type="tel" name="telephone" id="telephone" placeholder="请输入您的电话"/>
+                    </div>
+                    <div class="form-group">
+                        <label>身份/Identity:</label>
+                        <div class="grid grid-2">
+                        <button type="button" class="btn btn-secondary" onclick="student()">学生</button>
+                        <button type="button" class="btn btn-secondary" onclick="tutor()">导师</button>
+                        </div>
+                        <p id="demo" class="mt-2 text-center"></p>
+                        <input type="hidden" name="role" value="student"/>
+                    </div>
+                    <div class="grid grid-2">
+                        <button type="submit" class="btn btn-primary">注册</button>
+                        <button type="button" class="btn btn-secondary" onclick="location.href='#login'">返回登录</button>
+                    </div>
+                </form>
+            </article>
+
+            <!-- Find Password -->
+            <article id="findPasswd" class="card">
+                <h2 class="major">找回密码</h2>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/index/findPasswd.png') }}" alt="找回密码"/>
+                </div>
+                <form method="post" id="sendCaptcha" action="/sendCaptcha">
+                    <p>我们将会向您的预留邮箱发送一条验证码，请注意查收。</p>
+                    <div class="form-group">
+                        <label for="account">账号/Account:</label>
+                        <input type="text" name="account" id="account" placeholder="请输入您的账号"/>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">获取验证码</button>
+                    </div>
+                </form>
+            </article>
+
+            <!-- Reset Password -->
+            <article id="resetPasswd" class="card">
+                <h2 class="major">重置密码</h2>
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/index/intro.png') }}" alt="重置密码"/>
+                </div>
+                <form method="post" action="/resetPasswd">
+                    <div class="form-group">
+                        <label for="captcha">验证码/Captcha:</label>
+                        <input type="text" name="captcha" id="captcha" placeholder="请输入验证码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">新密码/New Password:</label>
+                        <input type="password" name="password" id="password" placeholder="请设置新密码"/>
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">修改密码</button>
+                    </div>
+                </form>
+            </article>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='assets/index/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/index/js/browser.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/index/js/breakpoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/index/js/util.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/index/js/main.js') }}"></script>
+</body>
+
+</html>

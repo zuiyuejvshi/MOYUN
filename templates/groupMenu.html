@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>墨韵 - 圈子首页</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="stylesheet" href="../static/css/style.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_dark.png" type="image/x-icon"/>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css" rel="stylesheet">
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    <div class="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="/home" style="font-family: 楷体,system-ui">墨 韵</a></h1>
+        <nav class="links">
+            <ul>
+                <li><a href="/home">主页</a></li>
+                <li><a href="/journalMenu">书评</a></li>
+                <li><a href="/bookMenu">书籍</a></li>
+                <li><a href="/groupMenu">圈子</a></li>
+                <li><a href="/message">消息</a></li>
+            </ul>
+        </nav>
+        <nav class="main">
+            <ul>
+                <li class="profile">
+                    <a class="image" href="/profile/{{ loginUser['id'] }}">
+                        <img src="{{ loginUser['profilePhoto'] }}" width="50%"
+                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;" alt="个人主页">
+                    </a>
+                </li>
+                <li class="search">
+                    <a class="fa-search" href="#search">Search</a>
+                    <form id="search" method="get" action="/search">
+                        <label>
+                            <input type="hidden" name="type" value="all">
+                            <input type="text" name="keyword" placeholder="搜索"/>
+                        </label>
+                    </form>
+                </li>
+                <li class="menu">
+                    <a class="fa-bars" href="#menu">Menu</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Menu -->
+    <section id="menu">
+        <!-- Links -->
+        <section>
+            <ul class="links">
+                <li>
+                    <h2>菜单</h2>
+                </li>
+                <li>
+                    <a href="/home">
+                        <h3>主页</h3>
+                        <p>看看有什么新闻吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/editProfile">
+                        <h3>修改个人信息</h3>
+                        <p>完善个人信息，别人更快认识你</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/journalMenu">
+                        <h3>书评页</h3>
+                        <p>看看大家讨论什么最火热</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/writeJournal">
+                        <h3>写书评</h3>
+                        <p>向别人分享自己的想法吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/bookMenu">
+                        <h3>书籍页</h3>
+                        <p>读一本好书，就是在和高尚的人谈话</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/groupMenu">
+                        <h3>圈子</h3>
+                        <p>欢迎加入我们的读书讨论圈子</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/message">
+                        <h3>消息中心</h3>
+                        <p>不要错过重要信息和精彩内容</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout"><h3>退出账号</h3></a>
+                </li>
+            </ul>
+        </section>
+    </section>
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <section id="info" class="group-sidebar">
+            <header>
+                <h2 style="font-family: 楷体,system-ui;">圈子首页</h2>
+                <div class="group-search">
+                    <form method="get" action="/search" class="search-form">
+                        <input type="hidden" name="type" value="group">
+                        <div class="search-input-wrapper">
+                            <i class="mdi mdi-magnify"></i>
+                            <input type="text" name="keyword" placeholder="搜索圈子..." autocomplete="off">
+                        </div>
+                    </form>
+                </div>
+                <div class="group-stats">
+                    <div class="stat-item">
+                        <i class="mdi mdi-account-group"></i>
+                        <span>已加入 {{ joinedGroups|length }} 个圈子</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="mdi mdi-forum"></i>
+                        <span>共 {{ totalDiscussions }} 条讨论</span>
+                    </div>
+                </div>
+            </header>
+        </section>
+
+        {% if loginUser['role'] in ['teacher', 'admin'] %}
+        <section class="create-group-section">
+            <div class="create-group-card">
+                <div class="create-group-icon">
+                    <i class="mdi mdi-plus-circle"></i>
+                </div>
+                <h3>创建新圈子</h3>
+                <p>创建一个新的读书讨论圈子，与志同道合的朋友一起交流</p>
+                <a href="/createGroup" class="create-group-btn">
+                    <i class="mdi mdi-plus"></i> 立即创建
+                </a>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="group-categories">
+            <h3>圈子分类</h3>
+            <div class="category-list">
+                <a href="/groupMenu?category=all" class="category-item {% if currentCategory == 'all' %}active{% endif %}">
+                    <i class="mdi mdi-apps"></i> 全部圈子
+                </a>
+                <a href="/groupMenu?category=joined" class="category-item {% if currentCategory == 'joined' %}active{% endif %}">
+                    <i class="mdi mdi-account-check"></i> 我的圈子
+                </a>
+                <a href="/groupMenu?category=popular" class="category-item {% if currentCategory == 'popular' %}active{% endif %}">
+                    <i class="mdi mdi-trending-up"></i> 热门圈子
+                </a>
+                <a href="/groupMenu?category=new" class="category-item {% if currentCategory == 'new' %}active{% endif %}">
+                    <i class="mdi mdi-new-box"></i> 最新圈子
+                </a>
+            </div>
+            <div class="group-filters" style="margin-top: 1.5rem;">
+                <select class="sort-select" onchange="window.location.href=this.value">
+                    <option value="/groupMenu?sort=latest" {% if currentSort == 'latest' %}selected{% endif %}>最新创建</option>
+                    <option value="/groupMenu?sort=popular" {% if currentSort == 'popular' %}selected{% endif %}>最多成员</option>
+                    <option value="/groupMenu?sort=active" {% if currentSort == 'active' %}selected{% endif %}>最活跃</option>
+                </select>
+            </div>
+        </section>
+    </section>
+    <!-- Main -->
+    <div id="main">
+        <div class="group-header">
+            <h2 class="title">圈子列表</h2>
+        </div>
+
+        <div class="group-grid">
+            {% for group in groups %}
+            <article class="group-card">
+                <div class="group-card-header">
+                    <a href="/group/{{ group['id'] }}" class="group-image">
+                        <img src="{{ group['groupIcon'] }}" alt="{{ group['name'] }}">
+                    </a>
+                    <div class="group-info">
+                        <h3><a href="/group/{{ group['id'] }}">{{ group['name'] }}</a></h3>
+                        <p class="group-description">{{ group['description'] }}</p>
+                    </div>
+                </div>
+                <div class="group-stats">
+                    <div class="stat">
+                        <i class="mdi mdi-account-group"></i>
+                        <span>{{ group['userNum'] }} 位成员</span>
+                    </div>
+                    <div class="stat">
+                        <i class="mdi mdi-forum"></i>
+                        <span>{{ group['discussionNum'] }} 条讨论</span>
+                    </div>
+                    <div class="stat">
+                        <i class="mdi mdi-calendar"></i>
+                        <span>{{ group['establishTime'].strftime('%Y-%m-%d') }}</span>
+                    </div>
+                </div>
+                <div class="group-actions">
+                    {% if group['id'] in joinedGroups %}
+                    <a href="/group/{{ group['id'] }}" class="action-btn joined">
+                        <i class="mdi mdi-check"></i> 已加入
+                    </a>
+                    {% else %}
+                    <a href="/group/{{ group['id'] }}" class="action-btn join">
+                        <i class="mdi mdi-account-plus"></i> 加入圈子
+                    </a>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% if not groups %}
+        <div class="no-groups">
+            <i class="mdi mdi-account-group"></i>
+            <h3>暂无圈子</h3>
+            <p>还没有找到合适的圈子？创建一个新的圈子吧！</p>
+            {% if loginUser['role'] in ['teacher', 'admin'] %}
+            <a href="/createGroup" class="create-group-btn">
+                <i class="mdi mdi-plus"></i> 创建圈子
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="../static/assets/home/js/jquery.min.js"></script>
+<script src="../static/assets/home/js/browser.min.js"></script>
+<script src="../static/assets/home/js/breakpoints.min.js"></script>
+<script src="../static/assets/home/js/util.js"></script>
+<script src="../static/assets/home/js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 搜索框自动提交
+    const searchInput = document.querySelector('.search-input-wrapper input');
+    let searchTimeout;
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            this.form.submit();
+        }, 500);
+    });
+
+    // 圈子卡片悬停效果
+    const groupCards = document.querySelectorAll('.group-card');
+    groupCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+
+</body>
+
+</html>

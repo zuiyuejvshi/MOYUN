@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ user['account'] }} | 墨韵 - 个人空间</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/global/style.css') }}"/>
+    <link rel="icon" href="{{ url_for('static', filename='logo/logo_320x320_dark.png') }}" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 个人资料页特定样式 */
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .header .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            margin: 0;
+        }
+
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-signature {
+            font-family: 楷体, system-ui;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .profile-value {
+            color: var(--text-primary);
+        }
+
+        .journal-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .journal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .journal-title {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .journal-meta {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .journal-stats {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-details {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+    <!-- 消息闪现 -->
+    <div class="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Header -->
+        <header class="header">
+        <h1><a href="/home" style="font-family: 楷体,system-ui">墨 韵</a></h1>
+            <nav class="nav-links">
+                <a href="/home">主页</a>
+                <a href="/journalMenu">书评</a>
+                <a href="/bookMenu">书籍</a>
+                <a href="/groupMenu">圈子</a>
+                <a href="/message">消息</a>
+                <a href="/profile/{{ loginUser['id'] }}">
+                    <img src="{{ loginUser['profilePhoto'] }}" class="profile-image" alt="个人主页">
+                    </a>
+        </nav>
+    </header>
+
+        <!-- Main Content -->
+        <main>
+        <h2 class="title">近期书评</h2>
+            {% for journal in journals %}
+                <article class="journal-card">
+                    <div class="journal-header">
+                        <h3 class="journal-title">
+                            <a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a>
+                        </h3>
+                        <div class="journal-meta">
+                            <span>{{ journal['publishTime'].strftime('%Y-%m-%d') }}</span>
+                        </div>
+                    </div>
+                    <div class="journal-stats">
+                        <span>❤️ {{ journal['likeNum'] }}</span>
+                        <span>💬 {{ journal['commentNum'] }}</span>
+                    </div>
+                </article>
+            {% endfor %}
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-card">
+                <h2 style="font-family: 楷体,system-ui;">个人空间</h2>
+                <div class="profile-header">
+                    <img src="{{ profilePhoto }}" alt="头像" class="profile-avatar"/>
+                    <div class="profile-info">
+                        <p class="profile-signature">{{ user['signature'] }}</p>
+                        <div class="profile-details">
+                            <span class="profile-label">账号</span>
+                            <span class="profile-value">{{ user['account'] }}</span>
+                            
+                            <span class="profile-label">邮箱</span>
+                            <span class="profile-value">{{ user['email'] }}</span>
+                            
+                            <span class="profile-label">电话</span>
+                            <span class="profile-value">{{ user['telephone'] }}</span>
+                            
+                            <span class="profile-label">用户组</span>
+                            <span class="profile-value">
+                                {% if user['role']=='student' %}
+                                    学生
+                                {% elif user['role']=='teacher' %}
+                                    教师
+                                {% elif user['role']=='admin' %}
+                                    管理员
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% if loginUser['id'] == user['id'] %}
+                            <a href="/editProfile" class="btn btn-primary">修改个人信息</a>
+                        {% endif %}
+        </div>
+    </div>
+            </div>
+        </aside>
+</div>
+
+<!-- Scripts -->
+    <script src="{{ url_for('static', filename='assets/home/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/home/js/browser.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/home/js/breakpoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/home/js/util.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/home/js/main.js') }}"></script>
+</body>
+
+</html>

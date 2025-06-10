@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ keyword }} | 墨韵 - 搜索结果</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="stylesheet" href="../static/css/style.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_dark.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    <div class="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Header -->
+    <header id="header">
+        <h1><a href="/home" style="font-family: 楷体,system-ui">墨 韵</a></h1>
+        <nav class="links">
+            <ul>
+                <li><a href="/home">主页</a></li>
+                <li><a href="/journalMenu">书评</a></li>
+                <li><a href="/bookMenu">书籍</a></li>
+                <li><a href="/groupMenu">圈子</a></li>
+                <li><a href="/message">消息</a></li>
+            </ul>
+        </nav>
+        <nav class="main">
+            <ul>
+                <li class="profile">
+                    <a class="image" href="/profile/{{ loginUser['id'] }}">
+                        <img src="{{ loginUser['profilePhoto'] }}" width="50%"
+                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;" alt="个人主页">
+                    </a>
+                </li>
+                <li class="search">
+                    <a class="fa-search" href="#search">Search</a>
+                    <form id="search" method="get" action="/search">
+                        <label>
+                            <input type="hidden" name="type" value="all">
+                            <input type="text" name="keyword" placeholder="搜索"/>
+                        </label>
+                    </form>
+                </li>
+                <li class="menu">
+                    <a class="fa-bars" href="#menu">Menu</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Menu -->
+    <section id="menu">
+        <!-- Links -->
+        <section>
+            <ul class="links">
+                <li>
+                    <h2>菜单</h2>
+                </li>
+                <li>
+                    <a href="/home">
+                        <h3>主页</h3>
+                        <p>看看有什么新闻吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/editProfile">
+                        <h3>修改个人信息</h3>
+                        <p>完善个人信息，别人更快认识你</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/journalMenu">
+                        <h3>书评页</h3>
+                        <p>看看大家讨论什么最火热</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/writeJournal">
+                        <h3>写书评</h3>
+                        <p>向别人分享自己的想法吧</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/bookMenu">
+                        <h3>书籍页</h3>
+                        <p>读一本好书，就是在和高尚的人谈话</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/groupMenu">
+                        <h3>圈子</h3>
+                        <p>欢迎加入我们的读书讨论圈子</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/message">
+                        <h3>消息中心</h3>
+                        <p>不要错过重要信息和精彩内容</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout"><h3>退出账号</h3></a>
+                </li>
+            </ul>
+        </section>
+    </section>
+    <!-- Main -->
+    <div id="main">
+        <div class="search-results-header">
+            <h2>搜索结果</h2>
+            <div class="search-stats">
+                <span><i class="fas fa-search"></i> 搜索类型：{{ searchType }}</span>
+                <span><i class="fas fa-key"></i> 关键词：{{ keyword }}</span>
+                <span><i class="fas fa-clock"></i> 用时：{{ costTime }}秒</span>
+                <span><i class="fas fa-list"></i> 结果数：{{ results | length }}</span>
+            </div>
+        </div>
+
+        {% if results|length == 0 %}
+        <article class="post no-results">
+            <div class="no-results-content">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>未找到相关结果</h3>
+                <p>请尝试使用其他关键词或搜索类型</p>
+            </div>
+        </article>
+        {% endif %}
+
+        {% for item in results %}
+            {% if item['searchType']=='journal' %}
+                <article class="post search-result">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/journal/{{ item['id'] }}">{{ item['title'] }}</a></h2>
+                            <div class="meta">
+                                <span class="published"><i class="far fa-calendar"></i> {{ item['publishTime'].strftime('%Y-%m-%d') }}</span>
+                                <a href="/profile/{{ item['authorID'] }}" class="author">
+                                    <img src="{{ item['authorPhoto'] }}" alt="作者头像" class="author-avatar"/>
+                                    <span class="name">{{ item['author'] }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+                    <a href="/journal/{{ item['id'] }}" class="image featured">
+                        <img src="{{ item['header'] }}" alt="{{ item['title'] }}_头图"/>
+                    </a>
+                    <p class="search-excerpt">{{ item['firstParagraph'] }}</p>
+                    <div class="search-type-badge">书评</div>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/journal/{{ item['id'] }}" class="button large">阅读全文</a></li>
+                        </ul>
+                        <ul class="stats">
+                            <li><a href="/profile/{{ item['authorID'] }}"><i class="fas fa-user"></i> {{ item['author'] }}</a></li>
+                            <li><i class="fas fa-heart"></i> {{ item['likeNum'] }}</li>
+                            <li><i class="fas fa-comment"></i> {{ item['commentNum'] }}</li>
+                        </ul>
+                    </footer>
+                </article>
+            {% elif item['searchType']=='book' %}
+                <article class="post search-result">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/book/{{ item['id'] }}">{{ item['title'] }}</a></h2>
+                            <p class="author-info">
+                                <i class="fas fa-pen-fancy"></i> 作者：{{ item['author'] }}
+                            </p>
+                        </div>
+                        <div class="meta">
+                            <a href="/book/{{ item['id'] }}" class="book-cover">
+                                <img src="{{ item['bookCover'] }}" alt="{{ item['title'] }}_封面"/>
+                            </a>
+                        </div>
+                    </header>
+                    <div class="book-info">
+                        <span class="published"><i class="far fa-calendar"></i> {{ item['publishDate'] }}</span>
+                        <p class="search-excerpt">{{ item['description'] }}</p>
+                        <div class="search-type-badge">书籍</div>
+                        <div class="douban-info">
+                            <a href="https://book.douban.com/subject/{{ item['doubanID'] }}" target="_blank">
+                                <i class="fas fa-star"></i> 豆瓣评分：{{ item['doubanScore'] }}
+                            </a>
+                        </div>
+                    </div>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/book/{{ item['id'] }}" class="button large">查看详情</a></li>
+                            {% if loginUser['role'] == 'admin' %}
+                                <li><a href="/editBook/{{ item['id'] }}" class="button large">编辑书籍</a></li>
+                            {% endif %}
+                        </ul>
+                        <ul class="stats">
+                            <li><i class="fas fa-comment"></i> {{ item['commentNum'] }} 条评论</li>
+                        </ul>
+                    </footer>
+                </article>
+            {% elif item['searchType']=="group" %}
+                <article class="post search-result">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/group/{{ item['id'] }}">{{ item['name'] }}</a></h2>
+                            <p class="founder-info">
+                                <i class="fas fa-user-plus"></i> 创建者：{{ item['founder'] }}
+                            </p>
+                        </div>
+                        <div class="meta">
+                            <a href="/group/{{ item['id'] }}" class="group-icon">
+                                <img src="{{ item['groupIcon'] }}" alt="{{ item['name'] }}_头像"/>
+                            </a>
+                        </div>
+                    </header>
+                    <div class="group-info">
+                        <span class="published"><i class="far fa-calendar"></i> {{ item['publishDate'] }}</span>
+                        <p class="search-excerpt">{{ item['description'] }}</p>
+                        <div class="search-type-badge">圈子</div>
+                    </div>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/group/{{ item['id'] }}" class="button large">加入圈子</a></li>
+                        </ul>
+                    </footer>
+                </article>
+            {% elif item['searchType']=="user" %}
+                <article class="post search-result">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/profile/{{ item['id'] }}">{{ item['account'] }}</a></h2>
+                            <p class="user-signature">{{ item['signature'] }}</p>
+                        </div>
+                        <div class="meta">
+                            <a href="/profile/{{ item['id'] }}" class="user-avatar">
+                                <img src="{{ item['profilePhoto'] }}" alt="{{ item['account'] }}_头像"/>
+                            </a>
+                        </div>
+                    </header>
+                    <div class="user-info">
+                        <span class="role-badge"><i class="fas fa-user-tag"></i> {{ item['role'] }}</span>
+                        <div class="search-type-badge">用户</div>
+                    </div>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/profile/{{ item['id'] }}" class="button large">查看主页</a></li>
+                        </ul>
+                    </footer>
+                </article>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <section id="intro">
+            <header>
+                <h2 style="font-family: 楷体,system-ui;">搜索</h2>
+                <div class="search-filter">
+                    <form method="get" action="/search" class="search-form">
+                        <input type="hidden" name="keyword" value="{{ keyword }}">
+                        <select name="type" onchange="this.form.submit()">
+                            <option value="all" {% if searchType == 'all' %}selected{% endif %}>全部</option>
+                            <option value="journal" {% if searchType == 'journal' %}selected{% endif %}>书评</option>
+                            <option value="book" {% if searchType == 'book' %}selected{% endif %}>书籍</option>
+                            <option value="group" {% if searchType == 'group' %}selected{% endif %}>圈子</option>
+                            <option value="user" {% if searchType == 'user' %}selected{% endif %}>用户</option>
+                        </select>
+                    </form>
+                </div>
+            </header>
+        </section>
+    </section>
+</div>
+
+<!-- Scripts -->
+<script src="../static/assets/home/js/jquery.min.js"></script>
+<script src="../static/assets/home/js/browser.min.js"></script>
+<script src="../static/assets/home/js/breakpoints.min.js"></script>
+<script src="../static/assets/home/js/util.js"></script>
+<script src="../static/assets/home/js/main.js"></script>
+
+</body>
+
+</html>
