@@ -2,15 +2,7 @@
 
 > “墨韵”读书分享会项目，2024spring软件工程大作业。
 
-## Contributors
-按顺序依次为：王雨桐，钟昊洋，席灏铖，谢媛，张文桥，李佳荃
 
-<a href="https://github.com/wang152boom" alt="wang152boom"><img src="https://avatars.githubusercontent.com/u/167402892?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/FlashBlank7" alt="FlashBlank7"><img src="https://avatars.githubusercontent.com/u/122159986?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/SpikeShaun" alt="SpikeShaun"><img src="https://avatars.githubusercontent.com/u/121989821?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/Flora-xyyy" alt="Flora-xyyy"><img src="https://avatars.githubusercontent.com/u/121485747?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/KidZwq" alt="KidZwq"><img src="https://avatars.githubusercontent.com/u/128034889?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/LiJiaquan1" alt="LiJiaquan1"><img src="https://avatars.githubusercontent.com/u/167403951?v=4" style="width: 64px; height: 64px;"/></a>
 
 ## 基本功能
 
