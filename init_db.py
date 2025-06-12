@@ -35,7 +35,7 @@ conn = pymysql.connect(
     host=db_info["Host"],
     port=db_info["Port"],
     user='root',
-    password='414789'
+    password='020812'
 )
 cursor = conn.cursor()
 

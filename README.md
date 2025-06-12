@@ -1,16 +1,97 @@
-# Moyun Book Sharing Session
+# 墨韵 - 书香社区
 
-> “墨韵”读书分享会项目，2024spring软件工程大作业。
+> 一个优雅的读书分享平台，让阅读更有温度
 
-## Contributors
-按顺序依次为：王雨桐，钟昊洋，席灏铖，谢媛，张文桥，李佳荃
+## 🌟 项目简介
 
-<a href="https://github.com/wang152boom" alt="wang152boom"><img src="https://avatars.githubusercontent.com/u/167402892?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/FlashBlank7" alt="FlashBlank7"><img src="https://avatars.githubusercontent.com/u/122159986?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/SpikeShaun" alt="SpikeShaun"><img src="https://avatars.githubusercontent.com/u/121989821?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/Flora-xyyy" alt="Flora-xyyy"><img src="https://avatars.githubusercontent.com/u/121485747?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/KidZwq" alt="KidZwq"><img src="https://avatars.githubusercontent.com/u/128034889?v=4" style="width: 64px; height: 64px;"/></a>
-<a href="https://github.com/LiJiaquan1" alt="LiJiaquan1"><img src="https://avatars.githubusercontent.com/u/167403951?v=4" style="width: 64px; height: 64px;"/></a>
+墨韵是一个致力于打造优质阅读社区的Web应用，在这里，你可以分享读书心得，结识志同道合的书友，共同探索知识的海洋。本项目采用现代化的技术栈，为用户提供流畅的阅读分享体验。
+
+## 🛠️ 技术架构
+
+- **后端框架**：Flask 2.0.2
+- **数据库**：MySQL 8.0.30
+- **开发语言**：Python 3.11.3
+- **运行环境**：Windows 10
+
+## ✨ 核心特性
+
+### 用户系统
+- 完整的用户认证体系
+- 个性化个人主页
+- 安全的密码找回机制
+- 用户间互动功能
+
+### 阅读社区
+- 深度书评系统
+- 智能书籍推荐
+- 互动式评论机制
+- 精准的搜索功能
+
+### 社交功能
+- 兴趣圈子
+- 实时消息通知
+- 用户间私信
+- 内容互动系统
+
+## 🎯 项目亮点
+
+- 优雅的错误处理机制
+- 统一的消息中心
+- 响应式界面设计
+- 完善的用户体验
+
+## 🚀 快速开始
+
+1. 克隆项目到本地
+2. 配置 `config.yaml` 文件
+3. 运行 `init_db.py` 初始化数据库
+4. 启动 `app.py` 开始使用
+
+## 📁 项目结构
+
+```
+├── Service/          # 业务逻辑层
+│   ├── DB/          # 数据库操作
+│   └── File/        # 文件处理
+├── static/          # 静态资源
+│   ├── assets/      # 前端资源
+│   ├── images/      # 图片资源
+│   └── ...
+├── templates/       # 页面模板
+├── app.py          # 应用入口
+└── config.yaml     # 配置文件
+```
+
+## 👥 开发团队
+
+- [@zuiyuejvshi](https://github.com/zuiyuejvshi) - 项目负责人
+- [@L1afm7](https://github.com/L1afm7) - 后端开发
+- [@Xiedongting2003](https://github.com/Xiedongting2003) - 前端开发
+- [@hhzy133](https://github.com/hhzy133) - UI设计
+- [@xinLing30](https://github.com/xinLing30) - 测试工程师
+
+## 📝 开发规范
+
+- 代码提交遵循 Git Flow 工作流
+- 使用英文命名变量和函数
+- 保持代码注释的完整性
+- 遵循 PEP 8 编码规范
+
+## 🔒 安全说明
+
+- 所有用户密码均经过加密存储
+- 采用 HTTPS 协议保证数据传输安全
+- 定期进行安全审计和漏洞修复
+
+## 📄 开源协议
+
+本项目采用 MIT 协议开源，欢迎贡献代码或提出建议。
+
+## 🌐 相关链接
+
+- [项目演示视频](https://www.bilibili.com/video/BV1km421V7si)
+- [问题反馈](https://github.com/zuiyuejvshi/MOYUN/issues)
+- [项目文档](https://github.com/zuiyuejvshi/MOYUN/wiki)
 
 ## 基本功能
 
@@ -94,18 +175,3 @@
 ```
 
 
-## Reference
-
-### 资源来源
-
-* HTML模板
-  * [Future Imperfect | HTML5 UP](https://html5up.net/future-imperfect)
-* Logo设计：[AIDesign](https://ailogo.qq.com/guide/brandname)
-
-### 参考资料
-
-* [欢迎来到 Flask 的世界 — Flask中文文档(2.1.x)](https://dormousehole.readthedocs.io/en/latest/index.html)
-* [Flask 教程_w3cschool](https://www.w3cschool.cn/flask/)
-* [CSS：层叠样式表 | MDN](https://developer.mozilla.org/zh-CN/docs/Web/CSS)
-* [HTTP 响应状态码 - HTTP | MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status)
-* [AJAX | 菜鸟教程](https://www.runoob.com/ajax/ajax-tutorial.html)

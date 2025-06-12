@@ -141,7 +141,7 @@
                 </div>
             </header>
 
-            <form action="/editBook/{{ book['id'] }}" method="post" enctype="multipart/form-data">
+            <form method="post" action="/editBook/{{ book['id'] if book else '' }}" enctype="multipart/form-data">
                 <span class="mini-posts">
                     <span class="intro" style="margin: 10px;border: 1px;align-content: center">
                      <table style="margin: 10px;horiz-align: center">

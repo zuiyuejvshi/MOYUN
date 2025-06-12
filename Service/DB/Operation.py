@@ -344,6 +344,17 @@ class Database:
         self.db.session.commit()
         return True
 
+    def addBook(self, **kwargs):
+        """
+        添加新书籍
+        :param kwargs: 书籍信息
+        :return: 新添加的书籍ID
+        """
+        book = Book(**kwargs)
+        self.db.session.add(book)
+        self.db.session.commit()
+        return book.id
+
     @staticmethod
     def getAllBook(limit=0) -> list[dict]:
         """
@@ -538,6 +549,17 @@ class Database:
         :return: 错误信息
         """
         error = Error.query.filter_by(errorCode=errorCode).first()
+        if error is None:
+            # 返回一个默认的错误信息，避免NoneType错误
+            return {
+                "errorCode": errorCode,
+                "title": "未知错误",
+                "title_en": "Unknown Error",
+                "content": f"未找到错误码为 {errorCode} 的详细信息。",
+                "publishTime": None,
+                "authorID": None,
+                "referenceLink": None
+            }
         return {"errorCode": error.errorCode,
                 "title": error.title,
                 "title_en": error.title_en,

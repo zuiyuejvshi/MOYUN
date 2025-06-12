@@ -187,8 +187,10 @@
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h2 class="title">新书上架</h2>
-                <a href="/editBook" class="add-book-btn">添加书籍</a>
+                <h2 class="title">新书上架</h2>
+                {% if loginUser['role'] == 'teacher' %}
+                    <a href="/editBook" class="add-book-btn">添加书籍</a>
+                {% endif %}
             </div>
 
             {% for book in books %}

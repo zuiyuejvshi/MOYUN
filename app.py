@@ -309,44 +309,118 @@ def editBook(bookID: int):
     if not session.get("loginUser"):
         flash("请先登录", "info")
         return redirect(url_for("index"))
-    if session.get("loginUser").get("role") != "admin":
-        flash("您没有权限", "info")
+    if session.get("loginUser").get("role") != "teacher":
+        flash("只有导师可以编辑书籍信息", "info")
         return redirect(url_for("home"))
     # 加载修改书籍的界面    
     if request.method == "GET":
-        book = db.getBook(bookID)
-        bookCover = fileMgr.getBookCoverPath(bookID, enableDefault=True)
-        return render_template("editBook.html", loginUser=session.get("loginUser"), book=book, bookCover=bookCover)
+        try:
+            book = db.getBook(bookID)
+            if not book:
+                flash("书籍不存在", "error")
+                return redirect(url_for("bookMenu"))
+            bookCover = fileMgr.getBookCoverPath(bookID, enableDefault=True)
+            return render_template("editBook.html", loginUser=session.get("loginUser"), book=book, bookCover=bookCover)
+        except Exception as e:
+            flash(f"加载书籍信息失败: {str(e)}", "error")
+            return redirect(url_for("bookMenu"))
     elif request.method == "POST":
-        title = request.form.get("title")
-        originTitle = request.form.get("originTitle")
-        subtitle = request.form.get("subtitle")
-        author = request.form.get("author")
-        page = request.form.get("page")
-        publisher = request.form.get("publisher")
-        publishDate = request.form.get("publishDate")
-        doubanID = request.form.get("doubanID")
-        type = request.form.get("type")
-        isbn = request.form.get("isbn")
-        description = request.form.get("description")
-        doubanScore = api.getBookInfo_Douban(doubanID)['doubanScore']
-        if db.modifyBook(bookID,
-                         isbn=isbn,
-                         title=title,
-                         originTitle=originTitle,
-                         subtitle=subtitle,
-                         author=author,
-                         page=page,
-                         publishDate=publishDate,
-                         publisher=publisher,
-                         description=description,
-                         doubanScore=doubanScore,
-                         doubanID=doubanID,
-                         type=type):
-            flash("修改成功", "success")
-        else:
-            flash("修改失败，请联系开发者修改", "error")
-        return redirect(url_for("book", bookID=bookID))
+        try:
+            title = request.form.get("title")
+            originTitle = request.form.get("originTitle")
+            subtitle = request.form.get("subtitle")
+            author = request.form.get("author")
+            page = request.form.get("page")
+            publisher = request.form.get("publisher")
+            publishDate = request.form.get("publishDate")
+            doubanID = request.form.get("doubanID")
+            type = request.form.get("type")
+            isbn = request.form.get("isbn")
+            description = request.form.get("description")
+            doubanScore = api.getBookInfo_Douban(doubanID)['doubanScore']
+            if db.modifyBook(bookID,
+                             isbn=isbn,
+                             title=title,
+                             originTitle=originTitle,
+                             subtitle=subtitle,
+                             author=author,
+                             page=page,
+                             publishDate=publishDate,
+                             publisher=publisher,
+                             description=description,
+                             doubanScore=doubanScore,
+                             doubanID=doubanID,
+                             type=type):
+                flash("修改成功", "success")
+            else:
+                flash("修改失败，请联系开发者修改", "error")
+            return redirect(url_for("book", bookID=bookID))
+        except Exception as e:
+            flash(f"修改书籍信息失败: {str(e)}", "error")
+            return redirect(url_for("bookMenu"))
+
+
+@app.route("/editBook", methods=["GET", "POST"])
+def addBook():
+    if not session.get("loginUser"):
+        flash("请先登录", "info")
+        return redirect(url_for("index"))
+    if session.get("loginUser").get("role") != "teacher":
+        flash("只有导师可以添加书籍", "info")
+        return redirect(url_for("home"))
+    
+    if request.method == "GET":
+        return render_template("editBook.html", loginUser=session.get("loginUser"), book={})
+    elif request.method == "POST":
+        try:
+            title = request.form.get("title") or None
+            originTitle = request.form.get("originTitle") or None
+            subtitle = request.form.get("subtitle") or None
+            author = request.form.get("author") or None
+            page = request.form.get("page")
+            page = int(page) if page and page.isdigit() else None
+            publisher = request.form.get("publisher") or None
+            publishDate = request.form.get("publishDate") or None
+            doubanID = request.form.get("doubanID") or None
+            type_ = request.form.get("type") or None
+            isbn = request.form.get("isbn") or None
+            description = request.form.get("description") or None
+            
+            # 获取豆瓣评分
+            doubanScore = None
+            if doubanID:
+                try:
+                    doubanScore = api.getBookInfo_Douban(doubanID).get('doubanScore')
+                    doubanScore = float(doubanScore) if doubanScore else None
+                except Exception:
+                    doubanScore = None
+            
+            # 检查必填字段
+            if not (isbn and title and author and doubanID and type_):
+                flash("ISBN、标题、作者、豆瓣ID、类型为必填项", "error")
+                return redirect(url_for("editBook"))
+            
+            # 添加新书籍到数据库
+            bookID = db.addBook(
+                isbn=isbn,
+                title=title,
+                originTitle=originTitle,
+                subtitle=subtitle,
+                author=author,
+                page=page,
+                publishDate=publishDate,
+                publisher=publisher,
+                description=description,
+                doubanScore=doubanScore,
+                doubanID=doubanID,
+                type=type_
+            )
+            
+            flash("添加成功", "success")
+            return redirect(url_for("book", bookID=bookID))
+        except Exception as e:
+            flash(f"添加书籍失败: {str(e)}", "error")
+            return redirect(url_for("bookMenu"))
 
 
 """6. 圈子相关"""

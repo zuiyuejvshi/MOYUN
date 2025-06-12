@@ -197,7 +197,7 @@
                     <footer>
                         <ul class="actions">
                             <li><a href="/book/{{ item['id'] }}" class="button large">查看详情</a></li>
-                            {% if loginUser['role'] == 'admin' %}
+                            {% if loginUser['role'] == 'teacher' %}
                                 <li><a href="/editBook/{{ item['id'] }}" class="button large">编辑书籍</a></li>
                             {% endif %}
                         </ul>
